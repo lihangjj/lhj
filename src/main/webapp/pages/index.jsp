@@ -38,8 +38,22 @@
                     var data = xmlHttpRequest.responseText;
                     document.getElementById("adminMsg").innerHTML = data;
                 }
-            }else if (xmlHttpRequest.status==404){
-                document.getElementById("adminMsg").innerHTML="路径有问题";
+            } else if (xmlHttpRequest.status == 404) {
+                document.getElementById("adminMsg").innerHTML = "路径有问题";
+            }
+        }
+
+        function handleCodeCallBack() {
+            if (xmlHttpRequest.status == 200) {
+
+                if (xmlHttpRequest.readyState == 2 || xmlHttpRequest.readyState == 3) {
+                }
+                if (xmlHttpRequest.readyState == 4) {
+                    var data = xmlHttpRequest.responseText;
+                    document.getElementById("codeMsg").innerHTML = data;
+                }
+            } else if (xmlHttpRequest.status == 404) {
+                document.getElementById("codeMsg").innerHTML = "路径有问题";
             }
         }
 
@@ -51,14 +65,24 @@
             }
         }
 
-        function validateAdmin(){
-           var flag=validateEmpty("admin");
-           if (flag){
-               createXmlHttpRequest();
-               xmlHttpRequest.open("post", "/AdminServlet?msg=" + document.getElementById("admin").value);
-               xmlHttpRequest.onreadystatechange = testCallBack;
-               xmlHttpRequest.send(null);
-           }
+        function validateAdmin() {
+            var flag = validateEmpty("admin");
+            if (flag) {
+                createXmlHttpRequest();
+                xmlHttpRequest.open("post", "/AdminServlet?msg=" + document.getElementById("admin").value);
+                xmlHttpRequest.onreadystatechange = testCallBack;
+                xmlHttpRequest.send(null);
+            }
+        }
+
+        function validatCode() {
+            var flag = validateRegex("code", /^[A-Za-z0-9]{4}$/)
+            if (flag) {
+                createXmlHttpRequest();
+                xmlHttpRequest.open("post", "/AdminServlet/code?msg=" + document.getElementById("code").value);
+                xmlHttpRequest.onreadystatechange = handleCodeCallBack;
+                xmlHttpRequest.send(null);
+            }
         }
     </script>
 </head>
@@ -71,7 +95,7 @@
         密 码：<input id="password" name="password" type="password"><span id="passwordMsg"></span><br>
         验证码:<input placeholder="验证码" id="code" name="code" type="text"
                    maxLength="4" size="10"
-                   onblur="validateRegex(this.id,/^[A-Za-z0-9]{4}$/)"><span id="codeMsg"></span>
+                   onblur="validatCode()"><span id="codeMsg"></span>
         <img class="" src="/pages/image.jsp" onclick="changeCode(this)">
 
     </form>
