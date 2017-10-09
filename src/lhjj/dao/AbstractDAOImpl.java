@@ -17,7 +17,7 @@ public abstract class AbstractDAOImpl<K, V> implements IDAO<K, V> {
     protected StringBuffer buf = new StringBuffer();
     protected String tableName;
     protected Class cls;
-    protected List<Field> fields = new ArrayList<>();
+    protected List<Field> fields = new ArrayList<Field>();
 
     public AbstractDAOImpl(Connection conn, V vo) throws Exception {
         this.conn = conn;
